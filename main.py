@@ -77,11 +77,13 @@ with open(json_file, 'w') as file:
     if n < 0:
         n = 0
     while(n <= limit):
-
+        skip = False
         token = UNISWAP_FACTORY_CONTRACT.functions.allPairs(n).call()
         for t in tokens:
             if t["address"] == token or token == "0x0000000000000000000000000000000000000000":
-                continue
+                skip = True
+        if skip:
+            continue
         token_contract = w3.eth.contract(address=token, abi=UNISWAP_PAIR_ABI)
         token0 = token_contract.functions.token0().call()
         token1 = token_contract.functions.token1().call()
