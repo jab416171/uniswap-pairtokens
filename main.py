@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from web3.auto.infura.mainnet import w3
+from web3.exceptions import BadFunctionCallOutput
 import sys, json, re
 from datetime import datetime, timezone
 
@@ -89,11 +90,11 @@ with open(json_file, 'w') as file:
         token1_contract = w3.eth.contract(address=token1, abi=ERC20_ABI)
         try:
             token0_symbol = token0_contract.functions.symbol().call()
-        except OverflowError:
+        except (OverflowError, BadFunctionCallOutput):
             token0_symbol = "UNK"
         try:
             token1_symbol = token1_contract.functions.symbol().call()
-        except OverflowError:
+        except (OverflowError, BadFunctionCallOutput):
             token1_symbol = "UNK"
         if not allowed_regex.match(token0_symbol):
             token0_symbol = "UNK"
