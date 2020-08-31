@@ -70,7 +70,7 @@ with open(json_file, 'w') as file:
     version = token_data["version"]
     version["minor"] += 1
     tokens = token_data["tokens"]
-    n = len(tokens)
+    n = len(tokens) - 1
     limit = n + 100
     if limit > token_count:
         limit = token_count
