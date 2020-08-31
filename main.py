@@ -100,8 +100,8 @@ with open(json_file, 'w') as file:
             token0_symbol = "UNK"
         if not allowed_regex.match(token1_symbol):
             token1_symbol = "UNK"
-        token0_symbol = token0_symbol[13:]
-        token1_symbol = token1_symbol[13:]
+        token0_symbol = token0_symbol[:13]
+        token1_symbol = token1_symbol[:13]
         new_token = {
             "name": f"{token_name} - {token0_symbol}/{token1_symbol}",
             "address": token,
