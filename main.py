@@ -74,6 +74,8 @@ with open(json_file, 'w') as file:
     limit = n + 100
     if limit > token_count:
         limit = token_count
+    if n < 0:
+        n = 0
     while(n <= limit):
 
         token = UNISWAP_FACTORY_CONTRACT.functions.allPairs(n).call()
