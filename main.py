@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from web3.auto.infura.mainnet import w3
-import sys, json
+import sys, json, re
 from datetime import datetime, timezone
 
 NETWORK="mainnet"
@@ -33,7 +33,7 @@ json_file = "uniswap_pair_tokens.json"
 def create_template(json_file):
     with open(json_file, 'w') as file:
         template = {
-            "name": "Uniswap Token Pairs List",
+            "name": "Uniswap Token Pairs",
             "timestamp": timestamp,
             "version": {
                 "major": 0,
@@ -64,6 +64,7 @@ def get_data_from_file():
 token_data = get_data_from_file()
 if token_data == {}:
     sys.exit()
+allowed_regex = re.compile("^[ \w.'+\-%/]+$")
 with open(json_file, 'w') as file:
     version = token_data["version"]
     version["minor"] += 1
@@ -93,6 +94,10 @@ with open(json_file, 'w') as file:
         try:
             token1_symbol = token1_contract.functions.symbol().call()
         except OverflowError:
+            token1_symbol = "UNK"
+        if not allowed_regex.match(token0_symbol):
+            token0_symbol = "UNK"
+        if not allowed_regex.match(token1_symbol):
             token1_symbol = "UNK"
         new_token = {
             "name": f"{token_name} - {token0_symbol}/{token1_symbol}",
