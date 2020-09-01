@@ -79,6 +79,7 @@ with open(json_file, 'w') as file:
     while(n <= limit):
         skip = False
         token = UNISWAP_FACTORY_CONTRACT.functions.allPairs(n).call()
+        n += 1
         for t in tokens:
             if t["address"] == token or token == "0x0000000000000000000000000000000000000000":
                 skip = True
@@ -115,7 +116,6 @@ with open(json_file, 'w') as file:
         }
         tokens.append(new_token)
 
-        n += 1
     token_data["timestamp"] = timestamp
 
     file.write(json.dumps(token_data))
